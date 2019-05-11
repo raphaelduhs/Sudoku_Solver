@@ -28,7 +28,7 @@ public class Sudoku_Rule_Creator {
     double rule_number_two_clauses = 0;
     double rule_number_three_clauses = 0;
 
-    HashMap<String, Integer> clause_dictionary = new HashMap<String, Integer>();
+    HashMap< String,Integer > clause_dictionary = new HashMap< String, Integer>();
 
     //a running number for the clause index
     int clause_number = 0;
