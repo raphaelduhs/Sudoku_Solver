@@ -1,0 +1,15 @@
+
+
+Sudoku solver for X * X Sudoku
+
+
+
+Sudoku_Rule_Creator:
+Takes an input value and creates the rules for the Sudoku in logical form.
+
+
+CNF_File_Creator:
+To pass it to the solver it is neccesarry to write the rules into a CNF Dimacs file. This class creates one.
+
+
+
