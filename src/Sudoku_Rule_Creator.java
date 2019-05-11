@@ -28,31 +28,38 @@ public class Sudoku_Rule_Creator {
     int rule_number_three_clauses = 0;
 
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
 
         int size = 1;
 
         //get size as a Input from console
-        try {
-            size = inputSize();
 
-        } catch (IOException e) {
-            //no input
-        }
+        size = inputSize();
+
+
     }
 
 
-    public static int inputSize() throws IOException {
+    public int inputSize()  {
 
-        System.out.println("Geben sie eine Zahl zwischen 2 und 6 ein");
-        //read the size of the Sudoku
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(System.in));
+        int number = -1;
 
-        // Reading data using readLine
-        int number = Integer.parseInt(reader.readLine());
+        try {
+            System.out.println("Geben sie eine Zahl zwischen 2 und 6 ein");
+            //read the size of the Sudoku
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(System.in));
 
-        return number;
+            // Reading data using readLine
+            number = Integer.parseInt(reader.readLine());
+
+            return number;
+        } catch (IOException e) {
+
+            System.out.println("something went wrong");
+            return number;
+        }
+
 
 
     }

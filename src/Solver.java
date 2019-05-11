@@ -10,8 +10,13 @@ import org.sat4j.specs.TimeoutException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
+
 public class Solver {
+
+
     public static void main (String [] args){
+
         ISolver solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
         Reader reader = new DimacsReader(solver);
