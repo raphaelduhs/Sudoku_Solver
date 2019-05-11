@@ -32,7 +32,7 @@ public class Sudoku_Rule_Creator {
 
     //a running number for the clause index
     int clause_number = 0;
-    int statement_number = 1;
+    int statement_number = 0;
 
 
     public void main(String[] args) {
@@ -47,9 +47,10 @@ public class Sudoku_Rule_Creator {
     }
 
 
-    public void createRules() {
+    public String[][]createRules() {
 
-        ArrayList <String []> rules [] = new ArrayList[3];
+        //ArrayList rules [] = new ArrayList[3];
+        String [][] rules  = new String [3][0];
 
         int size = inputSize();
 
@@ -60,6 +61,7 @@ public class Sudoku_Rule_Creator {
 
 
         //***************
+
 
         //create rule one - this is equivalent to the number of cells
         System.out.println("rule 1 ");
@@ -86,11 +88,8 @@ public class Sudoku_Rule_Creator {
 
 
                     // fill the dictionary to be later able to translate the solution
-                    clause_dictionary.put(value, statement_number );
                     statement_number++;
-                    System.out.println(clause_dictionary.get(value));
-                    System.out.println(clause_dictionary.keySet());
-
+                    clause_dictionary.put(value, statement_number );
 
                     //for the CNF file
                     if (rule_one_cnf[clause_number] != null) {
@@ -115,23 +114,8 @@ public class Sudoku_Rule_Creator {
         }
 
 
-        //print the hashmap for testing
-        //Display content using Iterator
 
-        /*Set set = clause_dictionary.entrySet();
-        Iterator iterator = set.iterator();
-        while(iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry)iterator.next();
-            System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
-            System.out.println(mentry.getValue());
-        }
-
-
-
-        System.out.println(" CLAUSES:" +clause_dictionary.size());
-        System.out.println(" ");
-        */
-
+        rules[0] = rule_one_cnf;
 
 
 
@@ -163,6 +147,7 @@ public class Sudoku_Rule_Creator {
         System.out.println(sum_clauses);
 
 
+        return rules;
 
 
     }

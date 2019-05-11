@@ -12,17 +12,19 @@ import java.io.IOException;
 
 
 
-public class Solver {
+public class Sudoku_Solver {
 
 
-    public static void main (String [] args){
+
+
+    public void solve (String filename){
 
         ISolver solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
         Reader reader = new DimacsReader(solver);
 // CNF filename is given on the command line
         try {
-            IProblem problem = reader.parseInstance("./test.cnf");
+            IProblem problem = reader.parseInstance(filename);
             if (problem.isSatisfiable()) {
                 System.out.println (" Satisfiable  !");
 
