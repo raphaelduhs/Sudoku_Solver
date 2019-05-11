@@ -8,9 +8,7 @@ public class Sudoku_Player {
 
         Sudoku_Rule_Creator rules = new Sudoku_Rule_Creator();
 
-        int size = rules.inputSize();
-
-        System.out.println(size);
+        rules.createRules();
 
     }
 

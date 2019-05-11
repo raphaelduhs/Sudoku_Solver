@@ -4,7 +4,13 @@ Sudoku solver for X * X Sudoku
 
 ***************************************************************************
 
+Naming convention:
+one cell is referenced by c_1_1_vx
 
+the first number is the column
+the second number is the row
+v = value
+x is the value
 
 Sudoku_Player:
 This is the main class where the Sudoku is played.
