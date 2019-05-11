@@ -32,6 +32,7 @@ public class Sudoku_Rule_Creator {
 
     //a running number for the clause index
     int clause_number = 0;
+    int statement_number = 1;
 
 
     public void main(String[] args) {
@@ -66,6 +67,7 @@ public class Sudoku_Rule_Creator {
         System.out.println(rule_number_one_clauses);
 
         String [] rule_one = new String[(int )rule_number_one_clauses];
+        String [] rule_one_cnf = new String[(int )rule_number_one_clauses];
 
         for (int cell_row = 1; cell_row <= lenght; cell_row++) {
 
@@ -82,8 +84,20 @@ public class Sudoku_Rule_Creator {
                         rule_one[clause_number] = value;
                     }
 
+
                     // fill the dictionary to be later able to translate the solution
-                    clause_dictionary.put(value, clause_number + number_values);
+                    clause_dictionary.put(value, statement_number );
+                    statement_number++;
+                    System.out.println(clause_dictionary.get(value));
+                    System.out.println(clause_dictionary.keySet());
+
+
+                    //for the CNF file
+                    if (rule_one_cnf[clause_number] != null) {
+                        rule_one_cnf[clause_number] = rule_one_cnf[clause_number] + " " + clause_dictionary.get(value);
+                    }else {
+                        rule_one_cnf[clause_number] = Integer.toString(clause_dictionary.get(value));
+                    }
 
 
 
@@ -91,6 +105,7 @@ public class Sudoku_Rule_Creator {
                 }
 
                 //System.out.println(rule_one[clause_number]);
+                //System.out.println(rule_one_cnf[clause_number]);
 
                 clause_number++;
 
@@ -100,22 +115,22 @@ public class Sudoku_Rule_Creator {
         }
 
 
-        //print the hashmap for test
+        //print the hashmap for testing
+        //Display content using Iterator
 
-        /* Display content using Iterator
-        Set set = clause_dictionary.entrySet();
+        /*Set set = clause_dictionary.entrySet();
         Iterator iterator = set.iterator();
         while(iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry)iterator.next();
             System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
             System.out.println(mentry.getValue());
         }
-        */
+
 
 
         System.out.println(" CLAUSES:" +clause_dictionary.size());
         System.out.println(" ");
-
+        */
 
 
 
