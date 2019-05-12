@@ -17,7 +17,7 @@ public class Sudoku_Solver {
 
 
 
-    public void solve (String filename){
+    public int[] solve (String filename){
 
         ISolver solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
@@ -29,6 +29,7 @@ public class Sudoku_Solver {
                 System.out.println (" Satisfiable  !");
 
                 System.out.println ( reader . decode ( problem . model ()));
+                return problem.model();
             } else {
                 System.out.println (" Unsatisfiable  !");
             }
@@ -43,5 +44,7 @@ public class Sudoku_Solver {
         } catch ( TimeoutException e) {
             System .out . println (" Timeout ,  sorry !");
         }
+        return null;
+
     }
 }
