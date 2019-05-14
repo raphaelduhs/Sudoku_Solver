@@ -22,12 +22,14 @@ public class Sudoku_Rule_Creator {
     rule 3:
     states that the values 1 -- X are only allowed to appear once in every row/column/quadrant
 
+    rule 4:
+    based on user input, states which cells already have a number assigned to them
+
      */
 
     double rule_number_one_clauses = 0;
     double rule_number_two_clauses = 0;
     double rule_number_three_clauses = 0;
-    int size;
 
     HashMap< String,Integer > clause_dictionary = new HashMap< String, Integer>();
     HashMap< String,Integer > statement_dictionary = new HashMap< String, Integer>();
@@ -49,12 +51,12 @@ public class Sudoku_Rule_Creator {
     }
 
 
-    public String[][]createRules() {
+    public String[][]createRules(int sudoku_size, int [][] sudoku_to_solve) {
 
         //ArrayList rules [] = new ArrayList[3];
-        String [][] rules  = new String [3][0];
+        String [][] rules  = new String [4][0];
 
-        size = inputSize();
+        int size = sudoku_size;
 
         //lenght of one row/coloumn/quardant
         double lenght = size*size;
@@ -182,6 +184,11 @@ public class Sudoku_Rule_Creator {
         }
 
         rules[1] = rule_two_cnf;
+
+
+
+
+
 
 
 
@@ -349,10 +356,24 @@ public class Sudoku_Rule_Creator {
         System.out.println("All: ");
         System.out.println(sum_clauses);
 
+        //consider user input
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < sudoku_to_solve.length; i++) {
 
-
-
-
+            for (int j = 0; j < sudoku_to_solve[i].length; j++) {
+                int value = sudoku_to_solve[i][j];
+                if(value != 0){
+                    int clause = (i * sudoku_size * sudoku_size) + (j * sudoku_size) + value;
+                    list.add(Integer.toString(clause));
+                }
+            }
+        }
+        String[] rule_four = new String[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            rule_four[i] = list.get(i);
+        }
+        rules[3] = rule_four;
+        //end consider user input
         return rules;
 
 
