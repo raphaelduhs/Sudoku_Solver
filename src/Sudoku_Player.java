@@ -15,9 +15,9 @@ public class Sudoku_Player {
         CNF_To_Sudoku sudoku_creator = new CNF_To_Sudoku();
 
 
-        String[] rule_1 = rule_creator.createRules()[0];
+        String[][] rules = rule_creator.createRules();
 
-        cnf.create_file(rule_1,rule_creator.clause_number,rule_creator.statement_number);
+        cnf.create_file(rules,rule_creator.clause_number,rule_creator.statement_number);
 
         int [] solved = solver.solve("./sudoku.cnf");
 

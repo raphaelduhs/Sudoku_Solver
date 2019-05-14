@@ -7,7 +7,11 @@ import java.io.IOException;
 public class CNF_File_Creator  {
 
 
-    public void create_file (String[] rules, int number_clauses , int number_statements) {
+    public void create_file (String[][] rules, int number_clauses , int number_statements) {
+
+
+        String[] rule_one = rules[0];
+        String[] rule_two = rules[1];
 
 
         try{
@@ -17,7 +21,7 @@ public class CNF_File_Creator  {
             fw.write('\n');
 
 
-            for (String rule: rules
+            for (String rule: rule_one
                  ) {
 
                 fw.write(rule);
@@ -25,6 +29,17 @@ public class CNF_File_Creator  {
                 fw.write('\n');
 
             }
+
+
+            for (String rule: rule_two
+            ) {
+
+                fw.write(rule);
+                fw.append(" 0");
+                fw.write('\n');
+
+            }
+
 
 
             fw.close();

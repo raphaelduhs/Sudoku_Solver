@@ -30,6 +30,7 @@ public class Sudoku_Rule_Creator {
     int size;
 
     HashMap< String,Integer > clause_dictionary = new HashMap< String, Integer>();
+    HashMap< String,Integer > statement_dictionary = new HashMap< String, Integer>();
 
     //a running number for the clause index
     int clause_number = 0;
@@ -72,6 +73,9 @@ public class Sudoku_Rule_Creator {
         String [] rule_one = new String[(int )rule_number_one_clauses];
         String [] rule_one_cnf = new String[(int )rule_number_one_clauses];
 
+        int implicator_value;
+        int not_implicated_value;
+
         for (int cell_row = 1; cell_row <= lenght; cell_row++) {
 
             for (int cell_column = 1; cell_column <= lenght; cell_column++) {
@@ -101,7 +105,6 @@ public class Sudoku_Rule_Creator {
 
 
 
-
                 }
 
                 //System.out.println(rule_one[clause_number]);
@@ -115,10 +118,7 @@ public class Sudoku_Rule_Creator {
         }
 
 
-
         rules[0] = rule_one_cnf;
-
-
 
 
 
@@ -132,6 +132,63 @@ public class Sudoku_Rule_Creator {
         // number of clauses times number of cells
         rule_number_two_clauses = rule_number_two_clauses * rule_number_one_clauses;
         System.out.println(rule_number_two_clauses + " for all ");
+
+        String [] rule_two = new String[(int )rule_number_two_clauses];
+        String [] rule_two_cnf = new String[(int )rule_number_two_clauses];
+
+        int insert_number = 0;
+
+        for (int cell_row = 1; cell_row <= lenght; cell_row++) {
+
+            for (int cell_column = 1; cell_column <= lenght; cell_column++) {
+
+                //iterate every value in every cell with each other but just ONCE
+
+                for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
+
+                    int length_new = (int ) lenght - implicator_value;
+
+                    // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
+                    for (int number_values = 1; number_values <= length_new; number_values++) {
+
+                        not_implicated_value = number_values + implicator_value;
+
+                        String value_1 = "c_" + cell_row + "_" + cell_column + "_w" + implicator_value ;
+
+
+                        String value_2 = "c_" + cell_row + "_" + cell_column + "_w" + not_implicated_value;
+
+
+                        String value = value_1  + " v " + value_2;
+
+                        rule_two [insert_number] = value;
+
+                        rule_two_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
+                                + "-" +Integer.toString(clause_dictionary.get(value_2) );
+
+                        System.out.println(rule_two_cnf[insert_number]);
+
+                        insert_number ++;
+
+                        clause_number++;
+
+                    }
+
+                }
+
+            }
+
+
+        }
+
+        rules[1] = rule_two_cnf;
+
+
+
+
+
+
+
 
         //************
 
