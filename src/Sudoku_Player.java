@@ -3,7 +3,6 @@ import java.util.stream.Collectors;
 
 public class Sudoku_Player {
 
-
     public static void main(String[] args) {
 
         final int SUDOKU_SIZE = 2;
@@ -21,7 +20,7 @@ public class Sudoku_Player {
         CNF_To_Sudoku sudoku_creator = new CNF_To_Sudoku();
 
 
-        String[][] rules = rule_creator.createRules();
+        String[][] rules = rule_creator.createRules(SUDOKU_SIZE, SUDOKU_TO_SOLVE);
 
         cnf.create_file(rules,rule_creator.clause_number,rule_creator.statement_number);
 
@@ -44,10 +43,5 @@ public class Sudoku_Player {
             }
             System.out.println();
         }
-
-
-
     }
-
-
 }
