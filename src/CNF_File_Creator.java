@@ -12,6 +12,7 @@ public class CNF_File_Creator  {
 
         String[] rule_one = rules[0];
         String[] rule_two = rules[1];
+        String[] rule_three = rules[2];
 
 
         try{
@@ -32,6 +33,15 @@ public class CNF_File_Creator  {
 
 
             for (String rule: rule_two
+            ) {
+
+                fw.write(rule);
+                fw.append(" 0");
+                fw.write('\n');
+
+            }
+
+            for (String rule: rule_three
             ) {
 
                 fw.write(rule);

@@ -159,14 +159,14 @@ public class Sudoku_Rule_Creator {
                         String value_2 = "c_" + cell_row + "_" + cell_column + "_w" + not_implicated_value;
 
 
-                        String value = value_1  + " v " + value_2;
+                        String value = "-" + value_1  + " v -" + value_2;
 
                         rule_two [insert_number] = value;
 
                         rule_two_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
                                 + "-" +Integer.toString(clause_dictionary.get(value_2) );
 
-                        System.out.println(rule_two_cnf[insert_number]);
+
 
                         insert_number ++;
 
@@ -185,11 +185,6 @@ public class Sudoku_Rule_Creator {
 
 
 
-
-
-
-
-
         //************
 
         //create rule three
@@ -198,11 +193,164 @@ public class Sudoku_Rule_Creator {
         rule_number_three_clauses = binomi(lenght,two) * lenght * (lenght * 3); // the 3 is for row / coloumn / quadrant
         System.out.println(rule_number_three_clauses + "the core rules ");
 
+        String [] rule_three = new String[(int )rule_number_three_clauses];
+        String [] rule_three_cnf = new String[(int )rule_number_three_clauses];
+
+        insert_number = 0;
+
+
+        //column
+        for (int cell_row = 1; cell_row <= lenght; cell_row++) {
+
+            for (int cell_column = 1; cell_column <= lenght; cell_column++) {
+
+                //iterate every value in every cell with each other but just ONCE
+
+                for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
+
+                    int length_new = (int ) lenght - implicator_value;
+
+                    // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
+                    for (int number_values = 1; number_values <= length_new; number_values++) {
+
+                        //**************************************************** column is suplimented
+
+                        not_implicated_value = number_values + implicator_value;
+
+                        String value_1 = "c_" + cell_row + "_" + implicator_value + "_w" + cell_column ;
+
+
+                        String value_2 = "c_" + cell_row + "_" + not_implicated_value + "_w" + cell_column;
+
+
+                        String value = "-" + value_1  + " v -" + value_2;
+
+                        rule_three [insert_number] = value;
+
+                        rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
+                                + "-" + Integer.toString(clause_dictionary.get(value_2) );
+
+                        //System.out.println(rule_two_cnf[insert_number]);
+                        //System.out.println(rule_three [insert_number]);
+
+                        insert_number ++;
+
+                        clause_number++;
+
+                    }
+
+                }
+
+            }
+
+
+        }
+
+
+        //row
+        for (int cell_row = 1; cell_row <= lenght; cell_row++) {
+
+            for (int cell_column = 1; cell_column <= lenght; cell_column++) {
+
+                //iterate every value in every cell with each other but just ONCE
+
+                for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
+
+                    int length_new = (int ) lenght - implicator_value;
+
+                    // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
+                    for (int number_values = 1; number_values <= length_new; number_values++) {
+
+                        //**************************************************** column is suplimented
+
+                        not_implicated_value = number_values + implicator_value;
+
+                        String value_1 = "c_" + implicator_value + "_" + cell_column + "_w" + cell_row ;
+
+
+                        String value_2 = "c_" + not_implicated_value + "_" + cell_column + "_w" + cell_row;
+
+
+                        String value = "-" + value_1  + " v -" + value_2;
+
+                        rule_three [insert_number] = value;
+
+                        rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
+                                + "-" +Integer.toString(clause_dictionary.get(value_2) );
+
+                        //System.out.println(rule_two_cnf[insert_number]);
+                        System.out.println(rule_three [insert_number]);
+
+                        insert_number ++;
+
+                        clause_number++;
+
+                    }
+
+                }
+
+            }
+
+
+        }
+
+
+        //quardant
+        for (int cell_row = 1; cell_row <= lenght; cell_row++) {
+
+            for (int cell_column = 1; cell_column <= lenght; cell_column++) {
+
+                //iterate every value in every cell with each other but just ONCE
+
+                for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
+
+                    int length_new = (int ) lenght - implicator_value;
+
+                    // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
+                    for (int number_values = 1; number_values <= length_new; number_values++) {
+
+                        //**************************************************** column is suplimented
+
+                        not_implicated_value = number_values + implicator_value;
+
+                        String value_1 = "c_" + implicator_value + "_" + cell_column + "_w" + cell_row ;
+
+
+                        String value_2 = "c_" + not_implicated_value + "_" + cell_column + "_w" + cell_row;
+
+
+                        String value = "-" + value_1  + " v -" + value_2;
+
+                        rule_three [insert_number] = value;
+
+                        rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
+                                + "-" +Integer.toString(clause_dictionary.get(value_2) );
+
+
+                        insert_number ++;
+
+                        clause_number++;
+
+                    }
+
+                }
+
+            }
+
+
+        }
+
+
+        rules[2] = rule_three_cnf;
+
 
         double sum_clauses = rule_number_two_clauses+rule_number_three_clauses+rule_number_one_clauses;
 
         System.out.println("All: ");
         System.out.println(sum_clauses);
+
+
+
 
 
         return rules;
