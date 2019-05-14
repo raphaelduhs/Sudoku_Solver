@@ -4,8 +4,10 @@ import java.util.Map;
 public class CNF_To_Sudoku {
 
     public int[][] print_sudoku(int[] solved, int sudoku_size){
+
         //amount of cells per row or column
         sudoku_size *= sudoku_size;
+
         //sudoku solution matrix
         int [][] solution = new int [sudoku_size][sudoku_size];
 
@@ -21,7 +23,6 @@ public class CNF_To_Sudoku {
                 }
             }
         }
-
         return solution;
     }
 }
