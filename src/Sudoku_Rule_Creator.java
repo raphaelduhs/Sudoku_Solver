@@ -303,6 +303,7 @@ public class Sudoku_Rule_Creator {
 
 
         //quardant
+
         for (int cell_row = 1; cell_row <= lenght; cell_row++) {
 
             for (int cell_column = 1; cell_column <= lenght; cell_column++) {
@@ -333,6 +334,8 @@ public class Sudoku_Rule_Creator {
                         rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
                                 + "-" +Integer.toString(clause_dictionary.get(value_2) );
 
+                        //System.out.println(rule_two_cnf[insert_number]);
+                        System.out.println(rule_three [insert_number]);
 
                         insert_number ++;
 
@@ -346,6 +349,58 @@ public class Sudoku_Rule_Creator {
 
 
         }
+
+        //int offset = 0;
+        /*
+        for (implicator_value = 1; implicator_value <= lenght; implicator_value ++) {
+
+            int length_new = (int ) lenght - implicator_value;
+
+
+            for (int cell_row = 1; cell_row <= lenght; cell_row++) {
+
+                for (int cell_column = 1; cell_column <= lenght; cell_column++) {
+
+
+                        // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
+                        for (int number_values = 1; number_values <= length_new; number_values++) {
+
+                            //**************************************************** column is suplimented
+
+                            not_implicated_value = number_values + implicator_value;
+
+                            String value_1 = "c_" + cell_row + "_" + implicator_value + "_w" + cell_row ;
+
+
+                            String value_2 = "c_" + cell_row + "_" + not_implicated_value + "_w" + cell_row;
+
+
+                            String value = "-" + value_1  + " v -" + value_2;
+
+                            rule_three [insert_number] = value;
+
+                            rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
+                                    + "-" +Integer.toString(clause_dictionary.get(value_2) );
+
+
+                            insert_number ++;
+
+                            clause_number++;
+
+                        }
+
+
+
+                }
+
+
+            }
+
+            offset = offset + size;
+
+        }
+        */
+
 
 
         rules[2] = rule_three_cnf;
@@ -374,6 +429,10 @@ public class Sudoku_Rule_Creator {
         }
         rules[3] = rule_four;
         //end consider user input
+
+
+        clause_number = clause_number + rule_four.length;
+
         return rules;
 
 
