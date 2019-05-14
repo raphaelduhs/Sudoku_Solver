@@ -303,7 +303,7 @@ public class Sudoku_Rule_Creator {
 
 
         //quardant
-
+        /*
         for (int cell_row = 1; cell_row <= lenght; cell_row++) {
 
             for (int cell_column = 1; cell_column <= lenght; cell_column++) {
@@ -349,14 +349,16 @@ public class Sudoku_Rule_Creator {
 
 
         }
+        */
 
-        //int offset = 0;
-        /*
+
+        int offset = 0;
+
         for (implicator_value = 1; implicator_value <= lenght; implicator_value ++) {
 
             int length_new = (int ) lenght - implicator_value;
 
-
+         for (int  )
             for (int cell_row = 1; cell_row <= lenght; cell_row++) {
 
                 for (int cell_column = 1; cell_column <= lenght; cell_column++) {
@@ -399,7 +401,7 @@ public class Sudoku_Rule_Creator {
             offset = offset + size;
 
         }
-        */
+
 
 
 
