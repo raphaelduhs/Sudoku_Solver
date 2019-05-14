@@ -9,13 +9,9 @@ import org.sat4j.specs.TimeoutException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-
+import java.sql.SQLOutput;
 
 public class Sudoku_Solver {
-
-
-
 
     public int[] solve (String filename){
 
@@ -26,25 +22,25 @@ public class Sudoku_Solver {
         try {
             IProblem problem = reader.parseInstance(filename);
             if (problem.isSatisfiable()) {
-                System.out.println (" Satisfiable  !");
 
+                System.out.println ("Satisfiable!");
                 System.out.println ( reader . decode ( problem . model ()));
                 return problem.model();
             } else {
-                System.out.println (" Unsatisfiable  !");
+
+                System.out.println ("Unsatisfiable!");
             }
         } catch ( FileNotFoundException e) {
-// TODO Auto - generated catch block
+            System.out.println(e);
         } catch ( ParseFormatException e) {
-// TODO Auto - generated catch block
+            System.out.println(e);
         } catch ( IOException e) {
-// TODO Auto - generated catch block
+            System.out.println(e);
         } catch ( ContradictionException e) {
-            System .out . println (" Unsatisfiable  ( trivial )!");
+            System .out . println ("Unsatisfiable (trivial)!");
         } catch ( TimeoutException e) {
-            System .out . println (" Timeout ,  sorry !");
+            System .out . println ("Timeout, sorry !");
         }
         return null;
-
     }
 }
