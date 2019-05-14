@@ -6,11 +6,13 @@ public class Sudoku_Player {
 
     public static void main(String[] args) {
 
+
+
+
         Sudoku_Rule_Creator rule_creator = new Sudoku_Rule_Creator();
         CNF_File_Creator cnf = new CNF_File_Creator();
         Sudoku_Solver solver = new Sudoku_Solver();
         CNF_To_Sudoku sudoku_creator = new CNF_To_Sudoku();
-
 
 
         String[] rule_1 = rule_creator.createRules()[0];
@@ -27,7 +29,9 @@ public class Sudoku_Player {
 
         // maybe have the user input here instead of the CNF_FILE_CREATOR class
         // for now hardcoded with size 2
-        int sudoku_size = 2;
+
+        int sudoku_size = rule_creator.size;
+
 
         int [][] sudoku = sudoku_creator.print_sudoku(solved, sudoku_size);
 

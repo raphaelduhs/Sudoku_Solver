@@ -27,6 +27,7 @@ public class Sudoku_Rule_Creator {
     double rule_number_one_clauses = 0;
     double rule_number_two_clauses = 0;
     double rule_number_three_clauses = 0;
+    int size;
 
     HashMap< String,Integer > clause_dictionary = new HashMap< String, Integer>();
 
@@ -52,7 +53,7 @@ public class Sudoku_Rule_Creator {
         //ArrayList rules [] = new ArrayList[3];
         String [][] rules  = new String [3][0];
 
-        int size = inputSize();
+        size = inputSize();
 
         //lenght of one row/coloumn/quardant
         double lenght = size*size;
