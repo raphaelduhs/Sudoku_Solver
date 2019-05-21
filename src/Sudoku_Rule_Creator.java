@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Sudoku_Rule_Creator {
@@ -31,8 +32,8 @@ public class Sudoku_Rule_Creator {
     double rule_number_two_clauses = 0;
     double rule_number_three_clauses = 0;
 
-    HashMap< String,Integer > clause_dictionary = new HashMap< String, Integer>();
-    HashMap< String,Integer > statement_dictionary = new HashMap< String, Integer>();
+    HashMap<String, Integer> clause_dictionary = new HashMap<String, Integer>();
+    HashMap<String, Integer> statement_dictionary = new HashMap<String, Integer>();
 
     //a running number for the clause index
     int clause_number = 0;
@@ -51,15 +52,15 @@ public class Sudoku_Rule_Creator {
     }
 
 
-    public String[][]createRules(int sudoku_size, int [][] sudoku_to_solve) {
+    public String[][] createRules(int sudoku_size, int[][] sudoku_to_solve) {
 
         //ArrayList rules [] = new ArrayList[3];
-        String [][] rules  = new String [4][0];
+        String[][] rules = new String[4][0];
 
         int size = sudoku_size;
 
         //lenght of one row/coloumn/quardant
-        double lenght = size*size;
+        double lenght = size * size;
         double two = 2;
         int clauses = 0;
 
@@ -69,11 +70,11 @@ public class Sudoku_Rule_Creator {
 
         //create rule one - this is equivalent to the number of cells
         System.out.println("rule 1 ");
-        rule_number_one_clauses = Math.pow(lenght,two);
+        rule_number_one_clauses = Math.pow(lenght, two);
         System.out.println(rule_number_one_clauses);
 
-        String [] rule_one = new String[(int )rule_number_one_clauses];
-        String [] rule_one_cnf = new String[(int )rule_number_one_clauses];
+        String[] rule_one = new String[(int) rule_number_one_clauses];
+        String[] rule_one_cnf = new String[(int) rule_number_one_clauses];
 
         int implicator_value;
         int not_implicated_value;
@@ -83,28 +84,27 @@ public class Sudoku_Rule_Creator {
             for (int cell_column = 1; cell_column <= lenght; cell_column++) {
 
                 // now for every cell fill in the clause all possible values like c_1_1_v1 OR c_1_1_v2 OR .....
-                for (int number_values = 1; number_values <= lenght ; number_values ++) {
+                for (int number_values = 1; number_values <= lenght; number_values++) {
 
-                    String value = "c_"+cell_row + "_" +cell_column+ "_w"+number_values;
+                    String value = "c_" + cell_row + "_" + cell_column + "_w" + number_values;
 
                     if (rule_one[clause_number] != null) {
                         rule_one[clause_number] = rule_one[clause_number] + " v " + value;
-                    }else {
+                    } else {
                         rule_one[clause_number] = value;
                     }
 
 
                     // fill the dictionary to be later able to translate the solution
                     statement_number++;
-                    clause_dictionary.put(value, statement_number );
+                    clause_dictionary.put(value, statement_number);
 
                     //for the CNF file
                     if (rule_one_cnf[clause_number] != null) {
                         rule_one_cnf[clause_number] = rule_one_cnf[clause_number] + " " + clause_dictionary.get(value);
-                    }else {
+                    } else {
                         rule_one_cnf[clause_number] = Integer.toString(clause_dictionary.get(value));
                     }
-
 
 
                 }
@@ -123,7 +123,6 @@ public class Sudoku_Rule_Creator {
         rules[0] = rule_one_cnf;
 
 
-
         //************
 
         //create rule two
@@ -135,8 +134,8 @@ public class Sudoku_Rule_Creator {
         rule_number_two_clauses = rule_number_two_clauses * rule_number_one_clauses;
         System.out.println(rule_number_two_clauses + " for all ");
 
-        String [] rule_two = new String[(int )rule_number_two_clauses];
-        String [] rule_two_cnf = new String[(int )rule_number_two_clauses];
+        String[] rule_two = new String[(int) rule_number_two_clauses];
+        String[] rule_two_cnf = new String[(int) rule_number_two_clauses];
 
         int insert_number = 0;
 
@@ -148,29 +147,28 @@ public class Sudoku_Rule_Creator {
 
                 for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
 
-                    int length_new = (int ) lenght - implicator_value;
+                    int length_new = (int) lenght - implicator_value;
 
                     // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
                     for (int number_values = 1; number_values <= length_new; number_values++) {
 
                         not_implicated_value = number_values + implicator_value;
 
-                        String value_1 = "c_" + cell_row + "_" + cell_column + "_w" + implicator_value ;
+                        String value_1 = "c_" + cell_row + "_" + cell_column + "_w" + implicator_value;
 
 
                         String value_2 = "c_" + cell_row + "_" + cell_column + "_w" + not_implicated_value;
 
 
-                        String value = "-" + value_1  + " v -" + value_2;
+                        String value = "-" + value_1 + " v -" + value_2;
 
-                        rule_two [insert_number] = value;
+                        rule_two[insert_number] = value;
 
-                        rule_two_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
-                                + "-" +Integer.toString(clause_dictionary.get(value_2) );
+                        rule_two_cnf[insert_number] = "-" + Integer.toString(clause_dictionary.get(value_1)) + " "
+                                + "-" + Integer.toString(clause_dictionary.get(value_2));
 
 
-
-                        insert_number ++;
+                        insert_number++;
 
                         clause_number++;
 
@@ -186,22 +184,16 @@ public class Sudoku_Rule_Creator {
         rules[1] = rule_two_cnf;
 
 
-
-
-
-
-
-
         //************
 
         //create rule three
 
         System.out.println("rule 3 ");
-        rule_number_three_clauses = binomi(lenght,two) * lenght * (lenght * 3); // the 3 is for row / coloumn / quadrant
+        rule_number_three_clauses = binomi(lenght, two) * lenght * (lenght * 3); // the 3 is for row / coloumn / quadrant
         System.out.println(rule_number_three_clauses + "the core rules ");
 
-        String [] rule_three = new String[(int )rule_number_three_clauses];
-        String [] rule_three_cnf = new String[(int )rule_number_three_clauses];
+        String[] rule_three = new String[(int) rule_number_three_clauses];
+        String[] rule_three_cnf = new String[(int) rule_number_three_clauses];
 
         insert_number = 0;
 
@@ -215,7 +207,7 @@ public class Sudoku_Rule_Creator {
 
                 for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
 
-                    int length_new = (int ) lenght - implicator_value;
+                    int length_new = (int) lenght - implicator_value;
 
                     // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
                     for (int number_values = 1; number_values <= length_new; number_values++) {
@@ -224,23 +216,23 @@ public class Sudoku_Rule_Creator {
 
                         not_implicated_value = number_values + implicator_value;
 
-                        String value_1 = "c_" + cell_row + "_" + implicator_value + "_w" + cell_column ;
+                        String value_1 = "c_" + cell_row + "_" + implicator_value + "_w" + cell_column;
 
 
                         String value_2 = "c_" + cell_row + "_" + not_implicated_value + "_w" + cell_column;
 
 
-                        String value = "-" + value_1  + " v -" + value_2;
+                        String value = "-" + value_1 + " v -" + value_2;
 
-                        rule_three [insert_number] = value;
+                        rule_three[insert_number] = value;
 
-                        rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
-                                + "-" + Integer.toString(clause_dictionary.get(value_2) );
+                        rule_three_cnf[insert_number] = "-" + Integer.toString(clause_dictionary.get(value_1)) + " "
+                                + "-" + Integer.toString(clause_dictionary.get(value_2));
 
                         //System.out.println(rule_two_cnf[insert_number]);
                         //System.out.println(rule_three [insert_number]);
 
-                        insert_number ++;
+                        insert_number++;
 
                         clause_number++;
 
@@ -263,32 +255,33 @@ public class Sudoku_Rule_Creator {
 
                 for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
 
-                    int length_new = (int ) lenght - implicator_value;
+                    int length_new = (int) lenght - implicator_value;
 
                     // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
                     for (int number_values = 1; number_values <= length_new; number_values++) {
 
                         //**************************************************** column is suplimented
 
+
                         not_implicated_value = number_values + implicator_value;
 
-                        String value_1 = "c_" + implicator_value + "_" + cell_column + "_w" + cell_row ;
+                        String value_1 = "c_" + implicator_value + "_" + cell_column + "_w" + cell_row;
 
 
                         String value_2 = "c_" + not_implicated_value + "_" + cell_column + "_w" + cell_row;
 
 
-                        String value = "-" + value_1  + " v -" + value_2;
+                        String value = "-" + value_1 + " v -" + value_2;
 
-                        rule_three [insert_number] = value;
+                        rule_three[insert_number] = value;
 
-                        rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
-                                + "-" +Integer.toString(clause_dictionary.get(value_2) );
+                        rule_three_cnf[insert_number] = "-" + Integer.toString(clause_dictionary.get(value_1)) + " "
+                                + "-" + Integer.toString(clause_dictionary.get(value_2));
 
                         //System.out.println(rule_two_cnf[insert_number]);
-                        System.out.println(rule_three [insert_number]);
+                        //System.out.println(rule_three [insert_number]);
 
-                        insert_number ++;
+                        insert_number++;
 
                         clause_number++;
 
@@ -296,119 +289,140 @@ public class Sudoku_Rule_Creator {
 
                 }
 
+
             }
 
 
         }
 
 
-        //quardant
-        /*
+        //quadrant
+
+        //create array
+        String[][][] quadrant_array = new String[(int) lenght][(int) lenght][(int) lenght];
+        int[][] position_counter = new int[(int) lenght][(int) lenght];
+
+        //initialize arrray
+        for (int ii = 0; ii < size; ii++) {
+
+            for (int i = 0; i < position_counter[ii].length; i++) {
+
+                position_counter[ii][i] = 0;
+
+            }
+
+        }
+
+
+        int offset_one = 0;
+        int offset_two = 0;
+
+        int column_position = 1;
+        int value_index = 0;
+
         for (int cell_row = 1; cell_row <= lenght; cell_row++) {
 
             for (int cell_column = 1; cell_column <= lenght; cell_column++) {
 
                 //iterate every value in every cell with each other but just ONCE
 
-                for (implicator_value = 1; implicator_value <= lenght; implicator_value++) {
+                //System.out.println(cell_row + "  -- " + cell_column);
+                //System.out.println("old position = " + position_counter[offset_one][offset_two] );
 
-                    int length_new = (int ) lenght - implicator_value;
+                quadrant_array[offset_one][offset_two][position_counter[offset_one][offset_two]] = cell_row + "_" + cell_column + ";";
 
-                    // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
-                    for (int number_values = 1; number_values <= length_new; number_values++) {
+                /*
+                System.out.println("one:" + offset_one);
+                System.out.println("two:" + offset_two);
+                System.out.println("cell_column = " + quadrant_array[offset_one][offset_two][position_counter[offset_one][offset_two]]);
+                */
+                position_counter[offset_one][offset_two]++;
 
-                        //**************************************************** column is suplimented
+                if (cell_column % size == 0) {
 
-                        not_implicated_value = number_values + implicator_value;
+                    offset_two++;
+                    //value_index = cell_row * size - (size + offset_one) - size * offset_one;
+                    //System.out.println("v_index :" + value_index);
 
-                        String value_1 = "c_" + implicator_value + "_" + cell_column + "_w" + cell_row ;
+                } else {
 
-
-                        String value_2 = "c_" + not_implicated_value + "_" + cell_column + "_w" + cell_row;
-
-
-                        String value = "-" + value_1  + " v -" + value_2;
-
-                        rule_three [insert_number] = value;
-
-                        rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
-                                + "-" +Integer.toString(clause_dictionary.get(value_2) );
-
-                        //System.out.println(rule_two_cnf[insert_number]);
-                        System.out.println(rule_three [insert_number]);
-
-                        insert_number ++;
-
-                        clause_number++;
-
-                    }
-
+                    value_index++;
                 }
+
+
+                //System.out.println("new position = " + position_counter[offset_one][offset_two] );
 
             }
 
 
+            offset_two = 0;
+
+            if (cell_row % size == 0) {
+
+                offset_one++;
+                value_index = 0;
+            }
+
+
         }
-        */
 
+        //write clauses
+        int comp_lenght = (int)lenght-1;
 
-        int offset = 0;
+        for (int val = 1; val <= lenght; val++ ) {
 
-        for (implicator_value = 1; implicator_value <= lenght; implicator_value ++) {
+            for (int first = 0; first < size; first++) {
 
-            int length_new = (int ) lenght - implicator_value;
+                for (int second = 0; second < size; second++) {
 
-         for (int  )
-            for (int cell_row = 1; cell_row <= lenght; cell_row++) {
+                    for (int every_value = 0; every_value < lenght; every_value++) {
 
-                for (int cell_column = 1; cell_column <= lenght; cell_column++) {
+                        //String value = quadrant_array[first][second][every_value];
 
+                        for (int comp = 1; comp <= comp_lenght; comp++) {
 
-                        // now for every cell fill in the clause all possible values like ( NOT c_1_1_v1 OR  NOT c_1_1_v2)
-                        for (int number_values = 1; number_values <= length_new; number_values++) {
+                            int not_impl_value = comp + every_value;
 
-                            //**************************************************** column is suplimented
+                            int string_length = quadrant_array[first][second][every_value].length();
 
-                            not_implicated_value = number_values + implicator_value;
+                            String value_1 = "c_" + quadrant_array[first][second][every_value].substring(0, string_length - 1) + "_w" + val;
 
-                            String value_1 = "c_" + cell_row + "_" + implicator_value + "_w" + cell_row ;
+                            String value_2 = "c_" + quadrant_array[first][second][not_impl_value].substring(0, string_length - 1) + "_w" + val;
 
+                            String value = "-" + value_1 + " v -" + value_2;
 
-                            String value_2 = "c_" + cell_row + "_" + not_implicated_value + "_w" + cell_row;
+                            System.out.println(value);
 
+                            rule_three[insert_number] = value;
 
-                            String value = "-" + value_1  + " v -" + value_2;
+                            rule_three_cnf[insert_number] = "-" + Integer.toString(clause_dictionary.get(value_1)) + " "
+                                    + "-" + Integer.toString(clause_dictionary.get(value_2));
 
-                            rule_three [insert_number] = value;
+                            System.out.println(rule_three_cnf[insert_number]);
 
-                            rule_three_cnf [insert_number] = "-"+Integer.toString(clause_dictionary.get(value_1) )+ " "
-                                    + "-" +Integer.toString(clause_dictionary.get(value_2) );
-
-
-                            insert_number ++;
-
+                            insert_number++;
                             clause_number++;
 
                         }
 
+                        comp_lenght--;
 
+                    }
+
+                    comp_lenght = (int) lenght - 1;
+
+                    //System.out.println("*****");
 
                 }
 
-
             }
 
-            offset = offset + size;
-
         }
-
-
-
 
         rules[2] = rule_three_cnf;
 
 
-        double sum_clauses = rule_number_two_clauses+rule_number_three_clauses+rule_number_one_clauses;
+        double sum_clauses = rule_number_two_clauses + rule_number_three_clauses + rule_number_one_clauses;
 
         System.out.println("All: ");
         System.out.println(sum_clauses);
@@ -419,16 +433,17 @@ public class Sudoku_Rule_Creator {
 
             for (int j = 0; j < sudoku_to_solve[i].length; j++) {
                 int value = sudoku_to_solve[i][j];
-                if(value != 0){
+                if (value != 0) {
                     int clause = (i * sudoku_size * sudoku_size) + (j * sudoku_size) + value;
                     list.add(Integer.toString(clause));
                 }
             }
         }
         String[] rule_four = new String[list.size()];
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             rule_four[i] = list.get(i);
         }
+
         rules[3] = rule_four;
         //end consider user input
 
@@ -441,7 +456,7 @@ public class Sudoku_Rule_Creator {
     }
 
 
-    public int inputSize()  {
+    public int inputSize() {
 
         int number = -1;
 
@@ -462,18 +477,15 @@ public class Sudoku_Rule_Creator {
         }
 
 
-
     }
 
 
-
-    double binomi ( double n, double k) {
+    double binomi(double n, double k) {
         if ((n == k) || (k == 0))
             return 1;
         else
             return binomi(n - 1, k) + binomi(n - 1, k - 1);
     }
-
 
 
 }

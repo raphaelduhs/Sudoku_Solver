@@ -42,6 +42,7 @@ public class CNF_File_Creator  {
 
             }
 
+
             for (String rule: rule_three
             ) {
 
@@ -50,6 +51,8 @@ public class CNF_File_Creator  {
                 fw.write('\n');
 
             }
+
+
 
             for (String rule: rule_four
             ) {
